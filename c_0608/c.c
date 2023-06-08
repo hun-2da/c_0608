@@ -3,12 +3,12 @@
 
 #define MAX_string 20
 typedef char* element;
-typedef struct DListNode {	// ÀÌÁß¿¬°á ³ëµå Å¸ÀÔ
+typedef struct DListNode {	// ì´ì¤‘ì—°ê²° ë…¸ë“œ íƒ€ì…
 	element data;
 	struct DListNode* llink;
 	struct DListNode* rlink;
 } DListNode;
-// ÀÌÁß ¿¬°á ¸®½ºÆ®¸¦ ÃÊ±âÈ­
+// ì´ì¤‘ ì—°ê²° ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ˆê¸°í™”
 void init(DListNode* phead)
 {
 	phead->llink = phead;
@@ -35,7 +35,7 @@ void dinsert(DListNode* before, char* data)
 	before->rlink->llink = newnode;
 	before->rlink = newnode;
 }
-DListNode* ddelete(DListNode* head, DListNode* removed)
+void ddelete(DListNode* head, DListNode* removed)
 {
 	if (removed != head) {
 		removed->llink->rlink = removed->rlink;
@@ -43,7 +43,6 @@ DListNode* ddelete(DListNode* head, DListNode* removed)
 		free(removed->data);
 		free(removed);
 	}
-	return head;
 }
 int main(void)
 {
@@ -55,7 +54,7 @@ int main(void)
 
 	while (1) {
 		
-		printf("¸Ş´º\n n) ´ÙÀ½ °úÀÏ\n p) ÀÌÀü °úÀÏ\n d) ÇöÀç °úÀÏ »èÁ¦\n i) ÇöÀç °úÀÏ ´ÙÀ½¿¡ °úÀÏ Ãß°¡\n o) °úÀÏ ¸®½ºÆ® Ãâ·Â(ÇöÀç ¼±ÅÃµÈ °úÀÏ¿¡´Â ¸¶Áö¸·¿¡[O] Ãâ·Â)\n e) ÇÁ·Î±×·¥ Á¾·á : ");
+		printf("ë©”ë‰´\n n) ë‹¤ìŒ ê³¼ì¼\n p) ì´ì „ ê³¼ì¼\n d) í˜„ì¬ ê³¼ì¼ ì‚­ì œ\n i) í˜„ì¬ ê³¼ì¼ ë‹¤ìŒì— ê³¼ì¼ ì¶”ê°€\n o) ê³¼ì¼ ë¦¬ìŠ¤íŠ¸ ì¶œë ¥(í˜„ì¬ ì„ íƒëœ ê³¼ì¼ì—ëŠ” ë§ˆì§€ë§‰ì—[O] ì¶œë ¥)\n e) í”„ë¡œê·¸ë¨ ì¢…ë£Œ : ");
 		char choice;
 		scanf_s("%c", &choice);
 
@@ -63,36 +62,36 @@ int main(void)
 		case 'n':
 			choice_node = choice_node->rlink;
 			if (head->rlink == head) {
-				printf("°úÀÏÀÌ ¾øÁö¿ä. \n");
+				printf("ê³¼ì¼ì´ ì—†ì§€ìš”. \n");
 				break;
 			}
 			else if(choice_node == head) 
 				choice_node = choice_node->rlink;
 			
-			printf("¿À¸¥ÂÊÀ¸·Î ÀÌµ¿\n");
+			printf("ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™\n");
 			break;
 		case 'p':
 			choice_node = choice_node->llink;
 			if (head->llink == head) {
-				printf("°úÀÏÀÌ ¾ø½À´Ï´Ù. \n");
+				printf("ê³¼ì¼ì´ ì—†ìŠµë‹ˆë‹¤. \n");
 				break;
 			}
 			else if (choice_node == head)
 				choice_node = choice_node->llink;
 			
 
-			printf("¿ŞÂÊÀ¸·Î ÀÌµ¿\n");
+			printf("ì™¼ìª½ìœ¼ë¡œ ì´ë™\n");
 			break;
 		case 'd':
 			if (choice_node == head) {
-				printf("°úÀÏÀ» ´Ù½Ã ¼±ÅÃÇÏ¿© ÁÖ½Ê½Ã¿À\n");
+				printf("ê³¼ì¼ì„ ë‹¤ì‹œ ì„ íƒí•˜ì—¬ ì£¼ì‹­ì‹œì˜¤\n");
 			}else {
-				printf("°úÀÏÀ» »èÁ¦ÇÕ´Ï´Ù.\n ");
+				printf("ê³¼ì¼ì„ ì‚­ì œí•©ë‹ˆë‹¤.\n ");
 				choice_node = head;
-				head = ddelete(choice_node, choice_node->rlink);
+				ddelete(choice_node, choice_node->rlink);
 			}break;
 		case 'i':
-			printf("Ãß°¡ÇÒ °úÀÏÀ» ÀÔ·ÂÇØ ÁÖ½Ê½Ã¿À : ");
+			printf("ì¶”ê°€í•  ê³¼ì¼ì„ ì…ë ¥í•´ ì£¼ì‹­ì‹œì˜¤ : ");
 			scanf_s("%s", fruit, MAX_string);
 			dinsert(head, fruit);
 			break;
@@ -100,11 +99,11 @@ int main(void)
 			print_dlist(head, choice_node);
 			break;
 
-		case 'e': printf("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù. ");
+		case 'e': printf("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤. ");
 			free(fruit);
 			free(head);
 			return 0;
-		default: printf("Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. \n");
+		default: printf("ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. \n");
 
 		}
 		choice = getchar();
